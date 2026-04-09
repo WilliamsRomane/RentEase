@@ -1,0 +1,232 @@
+.dashboard-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.notification-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.notification-button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  text-align: left;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 0.9rem;
+  background: rgba(15, 118, 110, 0.06);
+  color: #0f172a;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.notification-button:hover {
+  transform: translateY(-1px);
+  background: rgba(15, 118, 110, 0.12);
+  border-color: rgba(15, 118, 110, 0.28);
+  box-shadow: 0 10px 24px rgba(15, 23, 42, 0.08);
+}
+
+.notification-button:focus-visible {
+  outline: 3px solid rgba(20, 184, 166, 0.28);
+  outline-offset: 2px;
+}
+
+.notification-message,
+.notification-meta {
+  display: block;
+}
+
+.notification-message {
+  font-weight: 600;
+}
+
+.notification-meta {
+  margin-top: 0.35rem;
+  font-size: 0.9rem;
+  color: #475569;
+}
+
+.property-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.property-summary {
+  display: grid;
+  gap: 0.35rem;
+}
+
+.property-meta {
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.property-card-grid {
+  display: grid;
+  gap: 1rem;
+}
+
+.property-card {
+  width: 100%;
+  padding: 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 1.2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+  text-align: left;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.property-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(15, 23, 42, 0.08);
+  border-color: rgba(15, 118, 110, 0.28);
+}
+
+.property-card-active {
+  border-color: rgba(15, 118, 110, 0.5);
+  box-shadow: 0 18px 42px rgba(15, 118, 110, 0.12);
+}
+
+.property-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.property-label,
+.detail-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+.property-card-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-top: 1rem;
+  color: #475569;
+  font-size: 0.95rem;
+}
+
+.property-detail-panel {
+  margin-top: 1.25rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.22);
+}
+
+.property-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 0.9rem;
+}
+
+.property-detail-item {
+  padding: 0.9rem 1rem;
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+}
+
+.property-tenant-block {
+  margin-top: 1.25rem;
+}
+
+.property-tenant-block h3 {
+  margin: 0 0 0.85rem;
+  color: #0f172a;
+}
+
+.empty-tenant-state {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(226, 232, 240, 0.45);
+  color: #475569;
+}
+
+.tenant-card-list {
+  display: grid;
+  gap: 0.85rem;
+}
+
+.tenant-mini-card {
+  padding: 1rem;
+  border-radius: 1rem;
+  background: rgba(15, 118, 110, 0.06);
+  border: 1px solid rgba(15, 118, 110, 0.12);
+}
+
+.tenant-mini-name {
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.tenant-mini-meta {
+  margin-top: 0.35rem;
+  color: #475569;
+}
+
+.property-action-row {
+  margin-top: 1.5rem;
+}
+
+.property-form-wrap {
+  margin-top: 1.25rem;
+  padding: 1.25rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  background: #f8fafc;
+}
+
+.payment-status {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.3rem 0.7rem;
+  border-radius: 999px;
+  background: #e2e8f0;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.payment-status-balance {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.payment-row-balance {
+  background: rgba(254, 243, 199, 0.45);
+}
+
+@media (max-width: 640px) {
+  .property-card {
+    padding: 1rem;
+  }
+
+  .property-card-head {
+    flex-direction: column;
+    align-items: stretch;
+  }
+}

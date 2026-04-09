@@ -1,0 +1,394 @@
+<div class="p-6">
+  <div class="mb-6">
+    <h1 class="text-2xl font-bold">Tenant Dashboard</h1>
+  </div>
+
+  <mat-card class="mb-6">
+    <mat-card-header>
+      <mat-card-title>Rent Information</mat-card-title>
+    </mat-card-header>
+    <mat-card-content *ngIf="rentInfo">
+      <div *ngIf="rentInfo.dueSoon && rentInfo.reminderMessage" class="rent-reminder">
+        {{ rentInfo.reminderMessage }}
+      </div>
+      <p><strong>Property:</strong> {{ rentInfo.property.address }}</p>
+      <p><strong>Rent Amount:</strong> ${{ rentInfo.rentAmount.toFixed(2) }}</p>
+      <p><strong>Next Due Date:</strong> {{ rentInfo.nextDueDate }}</p>
+      <p><strong>Late Fee:</strong> ${{ rentInfo.lateFee.toFixed(2) }}</p>
+      <p><strong>Due Amount:</strong> ${{ rentInfo.dueAmount.toFixed(2) }}</p>
+      <p>
+        <strong>Outstanding:</strong> ${{ rentInfo.outstanding.toFixed(2) }}
+      </p>
+      <p *ngIf="rentInfo.isLate" class="text-red-600 font-semibold">
+        Late fee has been applied
+      </p>
+
+      <mat-form-field appearance="fill" style="width: 100%; margin-top: 1rem">
+        <mat-label>Pay Amount</mat-label>
+        <input
+          matInput
+          type="number"
+          [(ngModel)]="amountToPay"
+          [max]="rentInfo.outstanding"
+          [min]="0.01"
+          placeholder="Enter amount to pay (default outstanding)"
+        />
+      </mat-form-field>
+
+      <button
+        mat-raised-button
+        color="primary"
+        (click)="payRent()"
+        [disabled]="loading || rentInfo.outstanding <= 0"
+        class="mt-4"
+      >
+        {{ loading ? "Processing..." : "Pay Rent" }}
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card class="mb-6">
+    <mat-card-header>
+      <mat-card-title>Payment Methods</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="payment-copy">
+        Add the landlord banking information below so you can keep the payment
+        details together with your rent record.
+      </p>
+
+      <div class="payment-grid">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Payment Method</mat-label>
+          <mat-select [(ngModel)]="paymentMethodForm.paymentMethod" name="paymentMethod">
+            <mat-option value="bank_transfer">Bank Transfer</mat-option>
+            <mat-option value="wire_transfer">Wire Transfer</mat-option>
+            <mat-option value="cash_app">Cash App</mat-option>
+            <mat-option value="lynx">Lynx</mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <mat-form-field *ngIf="isLynxSelected" appearance="fill" class="w-full">
+          <mat-label>Lynx Phone Number</mat-label>
+          <input
+            matInput
+            [(ngModel)]="paymentMethodForm.landlordLynxPhoneNumber"
+            name="landlordLynxPhoneNumber"
+            type="tel"
+          />
+        </mat-form-field>
+
+        <div *ngIf="showBankDetails" class="payment-detail-group" [class.payment-detail-group-muted]="isCashAppSelected">
+          <mat-form-field *ngIf="isBankTransferSelected; else bankNameInput" appearance="fill" class="w-full">
+            <mat-label>Select Bank</mat-label>
+            <mat-select
+              [(ngModel)]="paymentMethodForm.landlordBankName"
+              name="landlordBankName"
+              [disabled]="isCashAppSelected"
+            >
+              <mat-option *ngFor="let bank of jamaicanBanks" [value]="bank">
+                {{ bank }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ng-template #bankNameInput>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Landlord Bank Name</mat-label>
+              <input
+                matInput
+                [(ngModel)]="paymentMethodForm.landlordBankName"
+                name="landlordBankName"
+                [disabled]="isCashAppSelected"
+              />
+            </mat-form-field>
+          </ng-template>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Account Holder Name</mat-label>
+            <input
+              matInput
+              [(ngModel)]="paymentMethodForm.landlordAccountName"
+              name="landlordAccountName"
+              [disabled]="isCashAppSelected"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Account Number</mat-label>
+            <input
+              matInput
+              [(ngModel)]="paymentMethodForm.landlordAccountNumber"
+              name="landlordAccountNumber"
+              [disabled]="isCashAppSelected"
+            />
+          </mat-form-field>
+
+          <mat-form-field *ngIf="isScotiabankSelected; else branchFieldByBank" appearance="fill" class="w-full">
+            <mat-label>Branch</mat-label>
+            <mat-select
+              [(ngModel)]="paymentMethodForm.landlordBranch"
+              name="landlordBranch"
+              [disabled]="isCashAppSelected"
+            >
+              <mat-option *ngFor="let branch of scotiabankBranches" [value]="branch">
+                {{ branch }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <ng-template #branchFieldByBank>
+            <mat-form-field *ngIf="isNcbSelected; else sagicorBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of ncbBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #sagicorBranchField>
+            <mat-form-field *ngIf="isSagicorSelected; else cibcBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of sagicorBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #cibcBranchField>
+            <mat-form-field *ngIf="isCibcSelected; else jmmbBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of cibcBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #jmmbBranchField>
+            <mat-form-field *ngIf="isJmmbSelected; else firstGlobalBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of jmmbBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #firstGlobalBranchField>
+            <mat-form-field *ngIf="isFirstGlobalSelected; else jnBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of firstGlobalBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #jnBranchField>
+            <mat-form-field *ngIf="isJnSelected; else vmbsBranchField" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of jnBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #vmbsBranchField>
+            <mat-form-field *ngIf="isVmbsSelected; else branchInput" appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <mat-select
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              >
+                <mat-option *ngFor="let branch of vmbsBranches" [value]="branch">
+                  {{ branch }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </ng-template>
+          <ng-template #branchInput>
+            <mat-form-field appearance="fill" class="w-full">
+              <mat-label>Branch</mat-label>
+              <input
+                matInput
+                [(ngModel)]="paymentMethodForm.landlordBranch"
+                name="landlordBranch"
+                [disabled]="isCashAppSelected"
+              />
+            </mat-form-field>
+          </ng-template>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Type of Account</mat-label>
+            <mat-select
+              [(ngModel)]="paymentMethodForm.landlordAccountType"
+              name="landlordAccountType"
+              [disabled]="isCashAppSelected"
+            >
+              <mat-option *ngFor="let accountType of accountTypes" [value]="accountType">
+                {{ accountType | titlecase }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Branch/Transit/SWIFT Number</mat-label>
+            <input
+              matInput
+              [(ngModel)]="paymentMethodForm.landlordRoutingNumber"
+              name="landlordRoutingNumber"
+              [disabled]="isCashAppSelected"
+            />
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full payment-full">
+            <mat-label>Payment Instructions</mat-label>
+            <textarea
+              matInput
+              rows="4"
+              [(ngModel)]="paymentMethodForm.paymentInstructions"
+              name="paymentInstructions"
+              [disabled]="isCashAppSelected"
+            ></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <button
+        mat-raised-button
+        color="primary"
+        type="button"
+        (click)="savePaymentMethod()"
+        [disabled]="savingPaymentMethod"
+      >
+        {{ savingPaymentMethod ? "Saving..." : "Save Payment Details" }}
+      </button>
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Payment History</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <table mat-table [dataSource]="payments" class="w-full">
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef>Amount</th>
+          <td mat-cell *matCellDef="let payment">${{ payment.amount }}</td>
+        </ng-container>
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.status }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef>Date</th>
+          <td mat-cell *matCellDef="let payment">{{ payment.paymentDate }}</td>
+        </ng-container>
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Actions</th>
+          <td mat-cell *matCellDef="let payment">
+            <button
+              mat-button
+              *ngIf="payment.status === 'paid'"
+              (click)="downloadReceipt(payment.id)"
+            >
+              Download Receipt
+            </button>
+          </td>
+        </ng-container>
+        <tr
+          mat-header-row
+          *matHeaderRowDef="['amount', 'status', 'date', 'actions']"
+        ></tr>
+        <tr
+          mat-row
+          *matRowDef="let row; columns: ['amount', 'status', 'date', 'actions']"
+        ></tr>
+      </table>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<div class="payment-modal-backdrop" *ngIf="showPaymentDetailsModal">
+  <div class="payment-modal">
+    <h2>Confirm Payment Details</h2>
+    <p class="payment-modal-copy">
+      Review the saved landlord payment information before continuing.
+    </p>
+
+    <div class="payment-modal-details">
+      <div>
+        <strong>Payment Method:</strong> {{ savedPaymentMethodLabel }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordBankName">
+        <strong>Bank:</strong> {{ savedPaymentMethod.landlordBankName }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordAccountName">
+        <strong>Account Holder:</strong>
+        {{ savedPaymentMethod.landlordAccountName }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordAccountNumber">
+        <strong>Account Number:</strong>
+        {{ savedPaymentMethod.landlordAccountNumber }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordBranch">
+        <strong>Branch:</strong>
+        {{ savedPaymentMethod.landlordBranch }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordAccountType">
+        <strong>Type of Account:</strong>
+        {{ savedPaymentMethod.landlordAccountType | titlecase }}
+      </div>
+      <div *ngIf="showSavedBankDetails && savedPaymentMethod.landlordRoutingNumber">
+        <strong>Branch/Transit/SWIFT Number:</strong>
+        {{ savedPaymentMethod.landlordRoutingNumber }}
+      </div>
+      <div *ngIf="savedPaymentMethod.paymentMethod === 'lynx' && savedPaymentMethod.landlordLynxPhoneNumber">
+        <strong>Lynx Phone Number:</strong>
+        {{ savedPaymentMethod.landlordLynxPhoneNumber }}
+      </div>
+      <div *ngIf="savedPaymentMethod.paymentInstructions">
+        <strong>Instructions:</strong> {{ savedPaymentMethod.paymentInstructions }}
+      </div>
+      <div *ngIf="rentInfo">
+        <strong>Amount Due:</strong> ${{ rentInfo.outstanding.toFixed(2) }}
+      </div>
+    </div>
+
+    <div class="payment-modal-actions">
+      <button mat-stroked-button type="button" (click)="editPaymentDetails()">
+        Edit
+      </button>
+      <button mat-raised-button color="primary" type="button" (click)="confirmPaymentDetails()">
+        Confirm
+      </button>
+    </div>
+  </div>
+</div>

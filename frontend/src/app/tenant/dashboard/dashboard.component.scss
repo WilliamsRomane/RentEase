@@ -1,0 +1,76 @@
+.rent-reminder {
+  margin: 0 0 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(245, 158, 11, 0.28);
+  border-radius: 0.9rem;
+  background: rgba(254, 243, 199, 0.7);
+  color: #92400e;
+  font-weight: 600;
+}
+
+.payment-copy {
+  margin: 0 0 1rem;
+  color: #475569;
+}
+
+.payment-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.payment-detail-group {
+  display: contents;
+}
+
+.payment-detail-group-muted {
+  opacity: 0.55;
+}
+
+.payment-full {
+  grid-column: 1 / -1;
+}
+
+.payment-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(15, 23, 42, 0.55);
+  z-index: 1000;
+}
+
+.payment-modal {
+  width: min(100%, 34rem);
+  padding: 1.5rem;
+  border-radius: 1.25rem;
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.22);
+}
+
+.payment-modal h2 {
+  margin: 0 0 0.75rem;
+  color: #0f172a;
+}
+
+.payment-modal-copy {
+  margin: 0 0 1rem;
+  color: #475569;
+}
+
+.payment-modal-details {
+  display: grid;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+  color: #1e293b;
+}
+
+.payment-modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}

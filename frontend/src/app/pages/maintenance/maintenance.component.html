@@ -1,0 +1,119 @@
+<section class="maintenance-page">
+  <div class="maintenance-header">
+    <h1>Maintenance</h1>
+    <p *ngIf="isTenant">
+      Tell your landlord about issues at the property and track the response here.
+    </p>
+    <p *ngIf="isLandlord">
+      Review maintenance requests from tenants and respond with updates.
+    </p>
+  </div>
+
+  <mat-card class="maintenance-card" *ngIf="isTenant">
+    <mat-card-header>
+      <mat-card-title>Report An Issue</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form (ngSubmit)="submitRequest()">
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Issue Title</mat-label>
+          <input
+            matInput
+            [(ngModel)]="newRequest.issueTitle"
+            name="issueTitle"
+          />
+        </mat-form-field>
+
+        <mat-form-field appearance="fill" class="w-full">
+          <mat-label>Describe The Issue</mat-label>
+          <textarea
+            matInput
+            rows="5"
+            [(ngModel)]="newRequest.issueDescription"
+            name="issueDescription"
+          ></textarea>
+        </mat-form-field>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="saving">
+          {{ saving ? 'Submitting...' : 'Submit Request' }}
+        </button>
+      </form>
+    </mat-card-content>
+  </mat-card>
+
+  <div class="maintenance-list" *ngIf="!loading; else loadingState">
+    <mat-card class="maintenance-card" *ngFor="let request of maintenanceRequests">
+      <mat-card-header>
+        <mat-card-title>{{ request.issueTitle }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="maintenance-meta">
+          <span><strong>Status:</strong> {{ request.status }}</span>
+          <span *ngIf="request.property?.address">
+            <strong>Property:</strong> {{ request.property?.address }}
+          </span>
+          <span *ngIf="request.tenant?.user?.name">
+            <strong>Tenant:</strong> {{ request.tenant?.user?.name }}
+          </span>
+          <span><strong>Submitted:</strong> {{ request.createdAt | date: 'medium' }}</span>
+        </div>
+
+        <p class="maintenance-copy">{{ request.issueDescription }}</p>
+
+        <div class="maintenance-response" *ngIf="request.landlordResponse">
+          <strong>Landlord Response:</strong>
+          <p>{{ request.landlordResponse }}</p>
+          <div
+            class="maintenance-response-time"
+            *ngIf="request.landlordRespondedAt"
+          >
+            Responded: {{ request.landlordRespondedAt | date: 'medium' }}
+          </div>
+        </div>
+
+        <div *ngIf="isLandlord" class="maintenance-response-form">
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Response</mat-label>
+            <textarea
+              matInput
+              rows="4"
+              [(ngModel)]="landlordResponses[request.id].landlordResponse"
+              [name]="'landlordResponse' + request.id"
+            ></textarea>
+          </mat-form-field>
+
+          <mat-form-field appearance="fill" class="w-full">
+            <mat-label>Status</mat-label>
+            <mat-select
+              [(ngModel)]="landlordResponses[request.id].status"
+              [name]="'status' + request.id"
+            >
+              <mat-option value="open">Open</mat-option>
+              <mat-option value="in_progress">In Progress</mat-option>
+              <mat-option value="resolved">Resolved</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="button"
+            (click)="respondToRequest(request.id)"
+          >
+            Send Response
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="maintenance-card" *ngIf="maintenanceRequests.length === 0">
+      <mat-card-content>No maintenance requests yet.</mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #loadingState>
+    <mat-card class="maintenance-card">
+      <mat-card-content>Loading maintenance requests...</mat-card-content>
+    </mat-card>
+  </ng-template>
+</section>

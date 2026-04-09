@@ -1,0 +1,34 @@
+<section class="info-page pricing-page">
+  <span class="page-tag">Pricing</span>
+  <h1>Simple pricing for landlords. Tenants stay free.</h1>
+  <p>
+    Start with a 3-month free trial, then continue at one annual rate.
+  </p>
+
+  <div class="pricing-card">
+    <div class="pricing-head">
+      <h2>Landlord Pro</h2>
+      <p class="pricing-amount">$100 USD<span>/year</span></p>
+    </div>
+    <p class="trial-note">Includes a 3-month free trial before your first charge.</p>
+    <ul class="feature-list">
+      <li>Manage properties and tenants from one dashboard</li>
+      <li>Payment tracking and balance visibility</li>
+      <li>Maintenance request management</li>
+      <li>Notifications and reporting tools</li>
+    </ul>
+
+    <div class="pricing-actions">
+      <a
+        routerLink="/register"
+        [queryParams]="{ role: 'landlord' }"
+        class="primary-link"
+      >
+        Start Free Trial
+      </a>
+      <a routerLink="/register" [queryParams]="{ role: 'tenant' }" class="secondary-link">
+        Tenant Signup (Free)
+      </a>
+    </div>
+  </div>
+</section>

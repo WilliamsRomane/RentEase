@@ -1,0 +1,33 @@
+.about-page {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(120deg, rgba(15, 23, 42, 0.62) 0%, rgba(15, 23, 42, 0.35) 40%, rgba(15, 23, 42, 0.18) 100%),
+    url('/assets/about-us.jpg') center / cover no-repeat;
+}
+
+.page-tag {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #d1fae5;
+}
+
+h1 {
+  margin: 0;
+  max-width: 44rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  color: #f8fafc;
+}
+
+p {
+  max-width: 48rem;
+  margin: 1.25rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: rgba(248, 250, 252, 0.92);
+}

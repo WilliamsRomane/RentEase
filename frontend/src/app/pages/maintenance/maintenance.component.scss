@@ -1,0 +1,61 @@
+.maintenance-page {
+  display: grid;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.maintenance-header h1 {
+  margin: 0 0 0.5rem;
+  color: #0f172a;
+}
+
+.maintenance-header p {
+  margin: 0;
+  color: #475569;
+}
+
+.maintenance-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.maintenance-card {
+  border-radius: 1rem;
+}
+
+.maintenance-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+  color: #475569;
+}
+
+.maintenance-copy {
+  margin: 0 0 1rem;
+  color: #0f172a;
+}
+
+.maintenance-response {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-radius: 0.9rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+}
+
+.maintenance-response p {
+  margin: 0.5rem 0 0;
+  color: #334155;
+}
+
+.maintenance-response-time {
+  margin-top: 0.75rem;
+  font-size: 0.92rem;
+  color: #64748b;
+}
+
+.maintenance-response-form {
+  display: grid;
+  gap: 1rem;
+}

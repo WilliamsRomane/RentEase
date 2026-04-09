@@ -1,0 +1,10 @@
+<section class="info-page">
+  <span class="page-tag">FAQs</span>
+  <h1>Common questions about RentEase.</h1>
+  <div class="faq-list">
+    <article *ngFor="let faq of faqs">
+      <h2>{{ faq.question }}</h2>
+      <p>{{ faq.answer }}</p>
+    </article>
+  </div>
+</section>

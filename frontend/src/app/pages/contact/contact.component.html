@@ -1,0 +1,76 @@
+<section class="info-page">
+  <span class="page-tag">Contact Us</span>
+  <h1>Share feedback and reach our team fast.</h1>
+  <p class="page-copy">
+    Send us a question, report a problem, or leave feedback. Your message is submitted immediately from this page.
+  </p>
+
+  <div class="contact-layout">
+    <form class="feedback-form" (ngSubmit)="submitFeedback()">
+      <h2>Send Feedback</h2>
+
+      <label>
+        <span>Name</span>
+        <input
+          type="text"
+          name="name"
+          [(ngModel)]="feedbackForm.name"
+          placeholder="Your name"
+          required
+        />
+      </label>
+
+      <label>
+        <span>Email</span>
+        <input
+          type="email"
+          name="email"
+          [(ngModel)]="feedbackForm.email"
+          placeholder="you@example.com"
+          required
+        />
+      </label>
+
+      <label>
+        <span>Subject</span>
+        <input
+          type="text"
+          name="subject"
+          [(ngModel)]="feedbackForm.subject"
+          placeholder="What can we help with?"
+          required
+        />
+      </label>
+
+      <label>
+        <span>Message</span>
+        <textarea
+          name="message"
+          [(ngModel)]="feedbackForm.message"
+          rows="6"
+          placeholder="Tell us what happened or what you would like to see improved."
+          required
+        ></textarea>
+      </label>
+
+      <button type="submit" [disabled]="saving">
+        {{ saving ? 'Sending...' : 'Submit Feedback' }}
+      </button>
+    </form>
+
+    <div class="contact-grid">
+      <article>
+        <h2>Email</h2>
+        <p>support@rentease.local</p>
+      </article>
+      <article>
+        <h2>Phone</h2>
+        <p>+1 (876) 700-7617</p>
+      </article>
+      <article>
+        <h2>Response Time</h2>
+        <p>Most messages are reviewed within one business day.</p>
+      </article>
+    </div>
+  </div>
+</section>
