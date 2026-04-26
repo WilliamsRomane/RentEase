@@ -38,10 +38,35 @@
     <router-outlet></router-outlet>
   </main>
 
+  <section
+    *ngIf="showCookieBanner"
+    class="cookie-banner"
+    aria-label="Cookie notice"
+  >
+    <div class="cookie-copy">
+      <p>
+        RentEase uses cookies and similar storage tools to keep sign-in sessions
+        working, remember preferences, and improve reliability.
+        <a routerLink="/cookie-policy">Learn more</a>
+      </p>
+    </div>
+
+    <div class="cookie-actions">
+      <button type="button" class="cookie-secondary" (click)="dismissCookieBanner()">
+        Not now
+      </button>
+      <button type="button" class="cookie-primary" (click)="acceptCookies()">
+        Accept cookies
+      </button>
+    </div>
+  </section>
+
   <footer class="site-footer">
     <div class="footer-copy">
       <p>&copy; 2026 RentEase. All rights reserved.</p>
       <a routerLink="/privacy-policy">Privacy Policy</a>
+      <a routerLink="/cookie-policy">Cookie Policy</a>
+      <a routerLink="/disclaimer">Disclaimer</a>
     </div>
 
     <div class="footer-social" aria-label="Social media links">

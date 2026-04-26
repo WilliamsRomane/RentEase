@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject } from 'rxjs';
 import { AuthService } from './auth.service';
+import { API_BASE_URL } from '../config/api.config';
 
 interface MaintenanceRequest {
   status: 'open' | 'in_progress' | 'resolved';
@@ -28,8 +29,8 @@ export class MaintenanceQueueService {
 
     const endpoint =
       currentUser.role === 'landlord'
-        ? 'http://localhost:4000/api/landlord/maintenance-requests'
-        : 'http://localhost:4000/api/tenant/maintenance-requests';
+        ? `${API_BASE_URL}/landlord/maintenance-requests`
+        : `${API_BASE_URL}/tenant/maintenance-requests`;
 
     this.http.get<MaintenanceRequest[]>(endpoint).subscribe({
       next: (requests) => {

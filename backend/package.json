@@ -7,7 +7,9 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node src/seed.js",
-    "backup:sqlite": "node scripts/backup-sqlite.js"
+    "backup:sqlite": "node scripts/backup-sqlite.js",
+    "migrate": "node src/db/migrate.js",
+    "migrate:status": "node src/db/migrate.js status"
   },
   "engines": {
     "node": ">=18"

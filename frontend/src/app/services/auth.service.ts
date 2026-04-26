@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { API_BASE_URL } from '../config/api.config';
 
 export interface User {
   id: number;
@@ -25,7 +26,7 @@ export interface ForgotPasswordResponse {
   providedIn: 'root',
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:4000/api/auth';
+  private apiUrl = `${API_BASE_URL}/auth`;
   private currentUserSubject = new BehaviorSubject<User | null>(null);
   public currentUser$ = this.currentUserSubject.asObservable();
   private readonly tokenStorageKey = 'token';

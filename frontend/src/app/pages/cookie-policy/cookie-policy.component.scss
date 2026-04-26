@@ -1,0 +1,25 @@
+.page-tag {
+  display: inline-block;
+  margin-bottom: 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #0f766e;
+}
+
+h1 {
+  margin: 0;
+  max-width: 48rem;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.1;
+  color: #0f172a;
+}
+
+p {
+  max-width: 52rem;
+  margin: 1.25rem 0 0;
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #475569;
+}

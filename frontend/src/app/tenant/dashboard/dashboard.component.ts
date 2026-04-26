@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { API_BASE_URL } from '../../config/api.config';
 
 interface RentInfo {
   rentAmount: number;
@@ -249,7 +250,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadRentInfo() {
-    this.http.get<RentInfo>('http://localhost:4000/api/tenant/rent').subscribe({
+    this.http.get<RentInfo>(`${API_BASE_URL}/tenant/rent`).subscribe({
       next: (data) => {
         this.rentInfo = data;
 
@@ -270,7 +271,7 @@ export class DashboardComponent implements OnInit {
 
   loadPayments() {
     this.http
-      .get<Payment[]>('http://localhost:4000/api/tenant/payments')
+      .get<Payment[]>(`${API_BASE_URL}/tenant/payments`)
       .subscribe({
         next: (data) => (this.payments = data),
         error: (err) => console.error('Failed to load payments', err),
@@ -279,7 +280,7 @@ export class DashboardComponent implements OnInit {
 
   loadPaymentMethod() {
     this.http
-      .get<PaymentMethodForm>('http://localhost:4000/api/tenant/payment-method')
+      .get<PaymentMethodForm>(`${API_BASE_URL}/tenant/payment-method`)
       .subscribe({
         next: (data) => {
           this.savedPaymentMethod = data;
@@ -302,7 +303,7 @@ export class DashboardComponent implements OnInit {
       this.paymentMethodForm.paymentInstructions = '';
     }
     this.http
-      .put('http://localhost:4000/api/tenant/payment-method', this.paymentMethodForm)
+      .put(`${API_BASE_URL}/tenant/payment-method`, this.paymentMethodForm)
       .subscribe({
         next: () => {
           this.savingPaymentMethod = false;
@@ -430,7 +431,7 @@ export class DashboardComponent implements OnInit {
         : this.rentInfo?.outstanding || 0;
 
     this.http
-      .post('http://localhost:4000/api/tenant/confirm-payment', { amount })
+      .post(`${API_BASE_URL}/tenant/confirm-payment`, { amount })
       .subscribe({
         next: () => {
           this.showPaymentDetailsModal = false;
@@ -505,7 +506,7 @@ export class DashboardComponent implements OnInit {
 
   downloadReceipt(paymentId: number) {
     this.http
-      .get(`http://localhost:4000/api/tenant/receipt/${paymentId}`, {
+      .get(`${API_BASE_URL}/tenant/receipt/${paymentId}`, {
         responseType: 'blob',
       })
       .subscribe({

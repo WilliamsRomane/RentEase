@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { API_BASE_URL } from '../../config/api.config';
 
 @Component({
   selector: 'app-contact',
@@ -20,6 +22,7 @@ export class ContactComponent {
   constructor(
     private http: HttpClient,
     private snackBar: MatSnackBar,
+    private router: Router,
   ) {}
 
   submitFeedback(): void {
@@ -36,7 +39,7 @@ export class ContactComponent {
     }
 
     this.saving = true;
-    this.http.post('http://localhost:4000/api/contact/feedback', this.feedbackForm).subscribe({
+    this.http.post(`${API_BASE_URL}/contact/feedback`, this.feedbackForm).subscribe({
       next: () => {
         this.feedbackForm = {
           name: '',
@@ -45,9 +48,7 @@ export class ContactComponent {
           message: '',
         };
         this.saving = false;
-        this.snackBar.open('Feedback sent successfully.', 'Close', {
-          duration: 3000,
-        });
+        this.router.navigate(['/contact/thank-you']);
       },
       error: (err) => {
         this.saving = false;

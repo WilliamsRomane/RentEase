@@ -27,8 +27,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { PricingComponent } from './pages/pricing/pricing.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { ContactThankYouComponent } from './pages/contact-thank-you/contact-thank-you.component';
 import { FaqsComponent } from './pages/faqs/faqs.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
+import { CookiePolicyComponent } from './pages/cookie-policy/cookie-policy.component';
 import { MaintenanceComponent } from './pages/maintenance/maintenance.component';
 
 @NgModule({
@@ -44,8 +47,11 @@ import { MaintenanceComponent } from './pages/maintenance/maintenance.component'
     PricingComponent,
     AboutComponent,
     ContactComponent,
+    ContactThankYouComponent,
     FaqsComponent,
     PrivacyPolicyComponent,
+    DisclaimerComponent,
+    CookiePolicyComponent,
     MaintenanceComponent,
   ],
   imports: [

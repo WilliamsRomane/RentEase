@@ -1,8 +1,10 @@
 const bcrypt = require("bcrypt");
 const { sequelize, User, Property, Tenant } = require("./models");
+const { runMigrations } = require("./db/migrate");
 
 async function seed() {
-  await sequelize.sync({ alter: true });
+  await sequelize.authenticate();
+  await runMigrations();
 
   const [landlord] = await User.findOrCreate({
     where: { email: "landlord@demo.com" },
@@ -40,6 +42,7 @@ async function seed() {
   console.log(
     "Seed complete. Log in as landlord@demo.com / Landlord123! and tenant@demo.com / Tenant123!",
   );
+  await sequelize.close();
   process.exit();
 }
 

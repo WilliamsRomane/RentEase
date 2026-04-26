@@ -3,7 +3,7 @@
   overflow: hidden;
   background:
     linear-gradient(120deg, rgba(15, 23, 42, 0.62) 0%, rgba(15, 23, 42, 0.35) 40%, rgba(15, 23, 42, 0.18) 100%),
-    url('/assets/about-us.jpg') center / cover no-repeat;
+    url('/assets/') center / cover no-repeat;
 }
 
 .page-tag {
@@ -13,7 +13,7 @@
   font-weight: 700;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: #d1fae5;
+  color: #d1fae5; 
 }
 
 h1 {

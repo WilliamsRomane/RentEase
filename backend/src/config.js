@@ -1,8 +1,16 @@
 const dotenv = require("dotenv");
 dotenv.config();
+function parseOrigins(value, fallback) {
+  const raw = value || fallback;
+  return raw
+    .split(",")
+    .map((origin) => origin.trim())
+    .filter(Boolean);
+}
 
 module.exports = {
   port: process.env.PORT || 4000,
+  nodeEnv: process.env.NODE_ENV || "development",
   jwtSecret: process.env.JWT_SECRET || "unsafe_secret",
   stripeSecretKey: process.env.STRIPE_SECRET_KEY || "",
   stripeWebhookSecret: process.env.STRIPE_WEBHOOK_SECRET || "",
@@ -14,6 +22,10 @@ module.exports = {
   powertranzCallbackHmacSecret:
     process.env.POWERTRANZ_CALLBACK_HMAC_SECRET || "",
   appBaseUrl: process.env.APP_BASE_URL || "http://localhost:4200",
+  allowedOrigins: parseOrigins(
+    process.env.ALLOWED_ORIGINS,
+    process.env.APP_BASE_URL || "http://localhost:4200",
+  ),
   db: {
     dialect: process.env.DATABASE_DIALECT || "sqlite",
     storage: process.env.DATABASE_STORAGE || "./database.sqlite",

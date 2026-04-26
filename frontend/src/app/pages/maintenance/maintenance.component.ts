@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AuthService } from '../../services/auth.service';
 import { MaintenanceQueueService } from '../../services/maintenance-queue.service';
+import { API_BASE_URL } from '../../config/api.config';
 
 interface MaintenanceRequest {
   id: number;
@@ -55,8 +56,8 @@ export class MaintenanceComponent implements OnInit {
   loadMaintenanceRequests(): void {
     this.loading = true;
     const endpoint = this.isLandlord
-      ? 'http://localhost:4000/api/landlord/maintenance-requests'
-      : 'http://localhost:4000/api/tenant/maintenance-requests';
+      ? `${API_BASE_URL}/landlord/maintenance-requests`
+      : `${API_BASE_URL}/tenant/maintenance-requests`;
 
     this.http.get<MaintenanceRequest[]>(endpoint).subscribe({
       next: (data) => {
@@ -89,7 +90,7 @@ export class MaintenanceComponent implements OnInit {
 
     this.saving = true;
     this.http
-      .post('http://localhost:4000/api/tenant/maintenance-requests', this.newRequest)
+      .post(`${API_BASE_URL}/tenant/maintenance-requests`, this.newRequest)
       .subscribe({
         next: () => {
           this.newRequest = { issueTitle: '', issueDescription: '' };
@@ -119,7 +120,7 @@ export class MaintenanceComponent implements OnInit {
     const payload = this.landlordResponses[requestId];
     this.http
       .patch(
-        `http://localhost:4000/api/landlord/maintenance-requests/${requestId}/respond`,
+        `${API_BASE_URL}/landlord/maintenance-requests/${requestId}/respond`,
         payload,
       )
       .subscribe({

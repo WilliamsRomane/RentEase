@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { API_BASE_URL } from '../../config/api.config';
 
 interface Property {
   id: number;
@@ -106,7 +107,7 @@ export class DashboardComponent implements OnInit {
 
   loadBillingStatus() {
     this.loadingBillingStatus = true;
-    this.http.get<BillingStatus>('http://localhost:4000/api/billing/subscription-status').subscribe({
+    this.http.get<BillingStatus>(`${API_BASE_URL}/billing/subscription-status`).subscribe({
       next: (data) => {
         this.billingStatus = data;
         this.loadingBillingStatus = false;
@@ -121,7 +122,7 @@ export class DashboardComponent implements OnInit {
   startSubscription() {
     this.startingSubscription = true;
     const baseUrl = window.location.origin;
-    this.http.post<{ sessionUrl: string }>('http://localhost:4000/api/billing/checkout-session', {
+    this.http.post<{ sessionUrl: string }>(`${API_BASE_URL}/billing/checkout-session`, {
       successUrl: `${baseUrl}/landlord/dashboard?billing=success`,
       cancelUrl: `${baseUrl}/landlord/dashboard?billing=cancelled`,
     }).subscribe({
@@ -144,7 +145,7 @@ export class DashboardComponent implements OnInit {
   openBillingPortal() {
     this.openingBillingPortal = true;
     const baseUrl = window.location.origin;
-    this.http.post<{ url: string }>('http://localhost:4000/api/billing/portal-session', {
+    this.http.post<{ url: string }>(`${API_BASE_URL}/billing/portal-session`, {
       returnUrl: `${baseUrl}/landlord/dashboard`,
     }).subscribe({
       next: (data) => {
@@ -201,7 +202,7 @@ export class DashboardComponent implements OnInit {
     const maxAttempts = 8;
     const delayMs = 2000;
 
-    this.http.get<BillingStatus>('http://localhost:4000/api/billing/subscription-status').subscribe({
+    this.http.get<BillingStatus>(`${API_BASE_URL}/billing/subscription-status`).subscribe({
       next: (data) => {
         this.billingStatus = data;
         if (data.isActive) {
@@ -236,7 +237,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadNotifications() {
-    this.http.get<DashboardNotification[]>('http://localhost:4000/api/landlord/notifications').subscribe({
+    this.http.get<DashboardNotification[]>(`${API_BASE_URL}/landlord/notifications`).subscribe({
       next: (data) => {
         this.notifications = data;
       },
@@ -246,7 +247,7 @@ export class DashboardComponent implements OnInit {
 
   markNotificationAsRead(notificationId: number) {
     this.http
-      .patch(`http://localhost:4000/api/landlord/notifications/${notificationId}/read`, {})
+      .patch(`${API_BASE_URL}/landlord/notifications/${notificationId}/read`, {})
       .subscribe({
         next: () => {
           this.notifications = this.notifications.filter(
@@ -265,7 +266,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadReminders() {
-    this.http.get<any[]>('http://localhost:4000/api/landlord/reminders').subscribe({
+    this.http.get<any[]>(`${API_BASE_URL}/landlord/reminders`).subscribe({
       next: (data) => {
         this.reminders = data;
       },
@@ -274,7 +275,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadReports() {
-    this.http.get<any>('http://localhost:4000/api/landlord/reports').subscribe({
+    this.http.get<any>(`${API_BASE_URL}/landlord/reports`).subscribe({
       next: (data) => {
         this.reports = data;
       },
@@ -283,7 +284,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadProperties() {
-    this.http.get<Property[]>('http://localhost:4000/api/landlord/properties').subscribe({
+    this.http.get<Property[]>(`${API_BASE_URL}/landlord/properties`).subscribe({
       next: (data) => {
         this.properties = data;
         if (!data.length) {
@@ -300,7 +301,7 @@ export class DashboardComponent implements OnInit {
   }
 
   loadTenants() {
-    this.http.get<TenantSummary[]>('http://localhost:4000/api/landlord/tenants').subscribe({
+    this.http.get<TenantSummary[]>(`${API_BASE_URL}/landlord/tenants`).subscribe({
       next: (data) => {
         this.tenants = data;
       },
@@ -310,7 +311,7 @@ export class DashboardComponent implements OnInit {
 
   loadPayments() {
     this.http
-      .get<TenantSummary[]>('http://localhost:4000/api/landlord/payments')
+      .get<TenantSummary[]>(`${API_BASE_URL}/landlord/payments`)
       .subscribe({
         next: (data) => {
           this.payments = data.flatMap((tenant) => {
@@ -356,7 +357,7 @@ export class DashboardComponent implements OnInit {
 
   createProperty() {
     this.http
-      .post('http://localhost:4000/api/landlord/property', this.newProperty)
+      .post(`${API_BASE_URL}/landlord/property`, this.newProperty)
       .subscribe({
         next: () => {
           this.newProperty = {
@@ -384,7 +385,7 @@ export class DashboardComponent implements OnInit {
 
   createTenant() {
     this.http
-      .post('http://localhost:4000/api/landlord/tenant', this.newTenant)
+      .post(`${API_BASE_URL}/landlord/tenant`, this.newTenant)
       .subscribe({
         next: () => {
           this.newTenant = { name: '', email: '', propertyId: 0, rentAmount: 0, nextDueDate: '' };
@@ -426,7 +427,7 @@ export class DashboardComponent implements OnInit {
 
   deleteTenant(tenantId: number) {
     this.http
-      .delete(`http://localhost:4000/api/landlord/tenant/${tenantId}`)
+      .delete(`${API_BASE_URL}/landlord/tenant/${tenantId}`)
       .subscribe({
         next: () => {
           this.loadProperties();
@@ -452,7 +453,7 @@ export class DashboardComponent implements OnInit {
 
   deleteProperty(propertyId: number) {
     this.http
-      .delete(`http://localhost:4000/api/landlord/property/${propertyId}`)
+      .delete(`${API_BASE_URL}/landlord/property/${propertyId}`)
       .subscribe({
         next: () => {
           this.loadProperties();

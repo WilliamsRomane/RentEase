@@ -10,6 +10,23 @@
 4. Run `npm run seed`
 5. Run `npm run dev`
 
+## Production Basics
+
+- Use a separate production database from your local development database
+- Prefer `DATABASE_DIALECT=mysql` for a live multi-user deployment
+- Set `APP_BASE_URL` to your frontend domain
+- Set `ALLOWED_ORIGINS` to your frontend domain or a comma-separated list of trusted frontend domains
+- Set a strong `JWT_SECRET`
+- Use `npm run migrate` during deployment to apply schema changes
+
+## Migrations
+
+- Run pending migrations:
+  `npm run migrate`
+- Check migration status:
+  `npm run migrate:status`
+- Seeding now runs migrations first, then inserts demo data
+
 ## SQLite Workflow
 
 - Main local database file: `backend/database.sqlite`

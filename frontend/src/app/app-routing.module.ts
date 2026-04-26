@@ -11,8 +11,11 @@ import { HomeComponent } from './pages/home/home.component';
 import { PricingComponent } from './pages/pricing/pricing.component';
 import { AboutComponent } from './pages/about/about.component';
 import { ContactComponent } from './pages/contact/contact.component';
+import { ContactThankYouComponent } from './pages/contact-thank-you/contact-thank-you.component';
 import { FaqsComponent } from './pages/faqs/faqs.component';
 import { PrivacyPolicyComponent } from './pages/privacy-policy/privacy-policy.component';
+import { DisclaimerComponent } from './pages/disclaimer/disclaimer.component';
+import { CookiePolicyComponent } from './pages/cookie-policy/cookie-policy.component';
 import { MaintenanceComponent } from './pages/maintenance/maintenance.component';
 
 const routes: Routes = [
@@ -20,8 +23,11 @@ const routes: Routes = [
   { path: 'pricing', component: PricingComponent },
   { path: 'about', component: AboutComponent },
   { path: 'contact', component: ContactComponent },
+  { path: 'contact/thank-you', component: ContactThankYouComponent },
   { path: 'faqs', component: FaqsComponent },
   { path: 'privacy-policy', component: PrivacyPolicyComponent },
+  { path: 'disclaimer', component: DisclaimerComponent },
+  { path: 'cookie-policy', component: CookiePolicyComponent },
   { path: 'maintenance', component: MaintenanceComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
   { path: 'forgot-password', component: ForgotPasswordComponent },

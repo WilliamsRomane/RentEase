@@ -10,7 +10,9 @@ import { MaintenanceQueueService } from './services/maintenance-queue.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit, OnDestroy {
+  private readonly cookieConsentStorageKey = 'rentease_cookie_consent';
   maintenanceQueueCount = 0;
+  showCookieBanner = false;
   private readonly subscriptions = new Subscription();
 
   constructor(
@@ -20,6 +22,8 @@ export class AppComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.showCookieBanner = !localStorage.getItem(this.cookieConsentStorageKey);
+
     this.subscriptions.add(
       this.authService.currentUser$.subscribe((user) => {
         if (user) {
@@ -45,6 +49,16 @@ export class AppComponent implements OnInit, OnDestroy {
   logout() {
     this.authService.logout();
     this.router.navigate(['/']);
+  }
+
+  acceptCookies(): void {
+    localStorage.setItem(this.cookieConsentStorageKey, 'accepted');
+    this.showCookieBanner = false;
+  }
+
+  dismissCookieBanner(): void {
+    localStorage.setItem(this.cookieConsentStorageKey, 'dismissed');
+    this.showCookieBanner = false;
   }
 
   get isLoggedIn(): boolean {
